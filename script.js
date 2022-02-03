@@ -30,25 +30,8 @@ function createProductItemElement({ id, title, thumbnail }) {
   return section;
 }
 
-const contentItem = document.querySelector('.items');
-
-async function insertCards() {
-  const btnCar = document.querySelector('.item__add');
-  const idItem = document.querySelector('.item__sku').innerText;
-  btnCar.addEventListener('click', fetchItem(idItem));
-  }
-
-async function insertItems() { 
-  const resultApi = await fetchProducts('computador');
-  resultApi.forEach((element) => {
-    contentItem.appendChild(createProductItemElement(element));
-  });
-  await insertCards();
-}
-insertItems();
-
 function getSkuFromProductItem(item) {
-  return item.querySelector('span.item__sku').innerText;
+  return item.querySelector('span.item__sku').innerText; 
 }
 
 function cartItemClickListener(event) {
@@ -63,4 +46,28 @@ function createCartItemElement({ id, title, price }) {
   return li;
 }
 
-window.onload = () => {};
+async function insertCards() {
+    const btnItem = document.getElementsByClassName('item__add');
+    for (let i = 0; i < btnItem.length; i += 1) {
+      btnItem[i].addEventListener('click', (event) => {
+        const sectionDad = event.target.parentNode;
+        const idItem = sectionDad.firstChild.innerText;
+      });
+    }
+    // const response = await fetchItem();
+    // console.log(response);
+}
+
+const sectionItem = document.querySelector('.items');
+
+async function insertItems(callback) { 
+  const resultApi = await fetchProducts('computador');
+  await resultApi.forEach((element) => {
+    sectionItem.appendChild(createProductItemElement(element));
+  });
+  callback();
+}
+
+window.onload = () => {
+  insertItems(insertCards);
+};
