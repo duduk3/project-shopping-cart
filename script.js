@@ -30,13 +30,18 @@ function createProductItemElement({ id, title, thumbnail }) {
   return section;
 }
 
-let idItem = '';
 function getSkuFromProductItem(item) {
   // return item.querySelector('span.item__sku').innerText; 
 }
 
+let idItem = '';
+const olCardDad = document.querySelector('.cart__items');
+
 function cartItemClickListener(event) {
   event.target.remove();
+  const storage2 = olCardDad.innerHTML;
+  saveCartItems(storage2);
+
 }
 
 function createCartItemElement({ id, title, price }) {
@@ -47,14 +52,15 @@ function createCartItemElement({ id, title, price }) {
   return li;
 }
 
-const olCardDad = document.querySelector('.cart__items');
 async function toFillCar(item) {
   idItem = item;
   const response = await fetchItem(idItem);
   olCardDad.appendChild(createCartItemElement(response));
+  const storage1 = olCardDad.innerHTML;
+  saveCartItems(storage1);
 }
 
-async function insertCards() {
+async function shoppingCards() {
     const btnItem = document.getElementsByClassName('item__add');
     for (let i = 0; i < btnItem.length; i += 1) {
       btnItem[i].addEventListener('click', (event) => {
@@ -67,14 +73,22 @@ async function insertCards() {
 
 const sectionItem = document.querySelector('.items');
 
-async function insertItems(callback) { 
+async function insertItems(callback) {
+  if (localStorage.cardItems !== undefined) {
+    olCardDad.innerHTML = localStorage.cardItems;
+    const storageLi = olCardDad.children;
+    for (let count = 0; count < storageLi.length; count += 1) {
+      storageLi[count].addEventListener('click', cartItemClickListener);
+    }
+  } 
   const resultApi = await fetchProducts('computador');
   await resultApi.forEach((element) => {
     sectionItem.appendChild(createProductItemElement(element));
   });
+
   callback();
 }
 
 window.onload = () => {
-  insertItems(insertCards);
+  insertItems(shoppingCards);
 };
