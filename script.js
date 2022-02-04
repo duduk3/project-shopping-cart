@@ -34,21 +34,47 @@ function getSkuFromProductItem(item) {
   // return item.querySelector('span.item__sku').innerText; 
 }
 
-let idItem = '';
+let idItem;
 const olCardDad = document.querySelector('.cart__items');
 
-function cartItemClickListener(event) {
-  event.target.remove();
-  const storage2 = olCardDad.innerHTML;
-  saveCartItems(storage2);
+const liCreateTotal = (total) => {
+  const li = document.createElement('li');
+  li.className = 'total-li';
+  li.innerText = `Total: R$${total}`;
+  return li;
+};
 
+const totalCart = (id, price, signal) => {
+  let total = 0;
+  if (localStorage.total === undefined) {
+    total = parseFloat(price, 2);
+    console.log(total);
+    localStorage.setItem(id, price);
+    localStorage.setItem('total', total.toString());
+    return;
+  } 
+  total = parseFloat(localStorage.getItem('total'), 2);
+  console.log(total);
+  if (signal === 'sum') total += parseFloat(price, 2);
+  if (signal === 'sub') total -= parseFloat(price, 2);
+  console.log(total);
+  localStorage.removeItem(id);
+  localStorage.setItem('total', total.toString());
+};
+
+function cartItemClickListener(event) {
+  const getId = event.target.classList;
+  event.target.remove();
+  saveCartItems(olCardDad.innerHTML);
+  totalCart(getId[1], getId[2], 'sub');
 }
 
 function createCartItemElement({ id, title, price }) {
   const li = document.createElement('li');
-  li.className = 'cart__item';
+  li.className = `cart__item ${id} ${price}`;
   li.innerText = `SKU: ${id} | NAME: ${title} | PRICE: $${price}`;
   li.addEventListener('click', cartItemClickListener);
+  totalCart(id, price, 'sum');
   return li;
 }
 
@@ -56,36 +82,39 @@ async function toFillCar(item) {
   idItem = item;
   const response = await fetchItem(idItem);
   olCardDad.appendChild(createCartItemElement(response));
-  const storage1 = olCardDad.innerHTML;
-  saveCartItems(storage1);
+  olCardDad.appendChild(liCreateTotal(price));
+  saveCartItems(olCardDad.innerHTML);
 }
 
 async function shoppingCards() {
-    const btnItem = document.getElementsByClassName('item__add');
-    for (let i = 0; i < btnItem.length; i += 1) {
-      btnItem[i].addEventListener('click', (event) => {
-        const sectionDad = event.target.parentNode;
-        const idItem2 = sectionDad.firstChild.innerText;
-        toFillCar(idItem2);
-      });
-    }
+  const btnItem = document.getElementsByClassName('item__add');
+  Array.from(btnItem).forEach((btn) => {
+    btn.addEventListener('click', (event) => {
+      const sectionDad = event.target.parentNode;
+      const idItem2 = sectionDad.firstChild.innerText;
+      toFillCar(idItem2);
+    });
+  });
 }
 
 const sectionItem = document.querySelector('.items');
 
+const getStoragedItems = () => {
+  if (localStorage.cartItems === '') localStorage.clear();
+  if (localStorage.cartItems !== undefined) {
+    olCardDad.innerHTML = localStorage.cartItems;
+    Array.from(olCardDad.children).forEach((li) => {
+      li.addEventListener('click', cartItemClickListener);
+    });
+  }
+};
+
 async function insertItems(callback) {
-  if (localStorage.cardItems !== undefined) {
-    olCardDad.innerHTML = localStorage.cardItems;
-    const storageLi = olCardDad.children;
-    for (let count = 0; count < storageLi.length; count += 1) {
-      storageLi[count].addEventListener('click', cartItemClickListener);
-    }
-  } 
+  getStoragedItems();
   const resultApi = await fetchProducts('computador');
   await resultApi.forEach((element) => {
     sectionItem.appendChild(createProductItemElement(element));
   });
-
   callback();
 }
 
