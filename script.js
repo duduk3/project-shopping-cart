@@ -36,18 +36,13 @@ function createProductItemElement({ id, title, thumbnail }) {
 
 let idItem;
 const olCardDad = document.querySelector('.cart__items');
+const cartDad = olCardDad.parentNode;
 
-const liCreateTotal = () => {
-  const cartDad = olCardDad.parentNode;
-  const catTotal = parseFloat(localStorage.total, 2).toFixed(2);
-  if (cartDad.innerHTML.length < 3) {
-    const totalPrice = document.createElement('div');
-    totalPrice.className = 'total-price';
-    totalPrice.innerText = `Total: R$${catTotal}`;
-    return cartDad.appendChild(totalPrice);
-  }
-  const getTotalPrice = document.querySelector('.total-price');
-  getTotalPrice.innerText = `Total: R$${catTotal}`;
+const liCreateTotal = (total) => {
+  const totalPrice = document.createElement('div');
+  totalPrice.className = 'total-price';
+  totalPrice.innerText = `Total: R$${total}`;
+  return totalPrice;
 };
 
 const totalCart = (id, price, signal) => {
@@ -71,7 +66,8 @@ function cartItemClickListener(event) {
   totalCart(getId[1], getId[2], 'sub');
   event.target.remove();
   saveCartItems(olCardDad.innerHTML);
-  liCreateTotal();
+  const loadPrice = parseFloat(localStorage.total, 2).toFixed(2);
+  document.querySelector('.total-price').innerText = `Total: R$ ${loadPrice}`;
 }
 
 function createCartItemElement({ id, title, price }) {
@@ -88,7 +84,13 @@ async function toFillCar(item) {
   const response = await fetchItem(idItem);
   olCardDad.appendChild(createCartItemElement(response));
   await saveCartItems(olCardDad.innerHTML);
-  liCreateTotal();
+  const isTotal = document.querySelector('.total-price');
+  const getTotalPrice = parseFloat(localStorage.total, 2).toFixed(2);
+  if (isTotal) {
+    isTotal.innerText = `Total: R$ ${getTotalPrice}`;
+  } else {
+    cartDad.appendChild(liCreateTotal(getTotalPrice));
+  }
 }
 
 async function shoppingCards() {
@@ -111,7 +113,7 @@ const getStoragedItems = () => {
     Array.from(olCardDad.children).forEach((li) => {
       li.addEventListener('click', cartItemClickListener);
     });
-    liCreateTotal();
+    cartDad.appendChild(liCreateTotal(parseFloat(localStorage.total, 2).toFixed(2)));
   }
 };
 
