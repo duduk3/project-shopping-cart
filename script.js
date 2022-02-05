@@ -30,43 +30,41 @@ function createProductItemElement({ id, title, thumbnail }) {
   return section;
 }
 
-function getSkuFromProductItem(item) {
-  // return item.querySelector('span.item__sku').innerText; 
-}
+// function getSkuFromProductItem(item) {
+//   // return item.querySelector('span.item__sku').innerText; 
+// }
 
 let idItem;
 const olCardDad = document.querySelector('.cart__items');
 
-const liCreateTotal = (total) => {
-  const li = document.createElement('li');
-  li.className = 'total-li';
-  li.innerText = `Total: R$${total}`;
-  return li;
-};
+// const liCreateTotal = (total) => {
+//   const li = document.createElement('li');
+//   li.className = 'total-li';
+//   li.innerText = `Total: R$${total}`;
+//   return li;
+// };
 
 const totalCart = (id, price, signal) => {
   let total = 0;
-  if (localStorage.total === undefined) {
-    total = parseFloat(price, 2);
-    console.log(total);
+  if (localStorage.total !== undefined) {
+    total = parseFloat(localStorage.getItem('total'), 2);
+  }
+  if (signal === 'sum') {
+    total += parseFloat(price, 2);
     localStorage.setItem(id, price);
-    localStorage.setItem('total', total.toString());
-    return;
-  } 
-  total = parseFloat(localStorage.getItem('total'), 2);
-  console.log(total);
-  if (signal === 'sum') total += parseFloat(price, 2);
-  if (signal === 'sub') total -= parseFloat(price, 2);
-  console.log(total);
-  localStorage.removeItem(id);
+  } else {
+    total -= parseFloat(price, 2);
+    localStorage.removeItem(id);
+  }
+  if (total < 0.01) total = 0;
   localStorage.setItem('total', total.toString());
 };
 
 function cartItemClickListener(event) {
   const getId = event.target.classList;
+  totalCart(getId[1], getId[2], 'sub');
   event.target.remove();
   saveCartItems(olCardDad.innerHTML);
-  totalCart(getId[1], getId[2], 'sub');
 }
 
 function createCartItemElement({ id, title, price }) {
@@ -82,8 +80,7 @@ async function toFillCar(item) {
   idItem = item;
   const response = await fetchItem(idItem);
   olCardDad.appendChild(createCartItemElement(response));
-  olCardDad.appendChild(liCreateTotal(price));
-  saveCartItems(olCardDad.innerHTML);
+  await saveCartItems(olCardDad.innerHTML);
 }
 
 async function shoppingCards() {
