@@ -48,13 +48,13 @@ const liCreateTotal = (total) => {
 const totalCart = (id, price, signal) => {
   let total = 0;
   if (localStorage.total !== undefined) {
-    total = Math.round(parseFloat(localStorage.getItem('total'), 2));
+    total = parseFloat(localStorage.getItem('total'), 2).toFixed(2);
   }
   if (signal === 'sum') {
-    total += Math.round(parseFloat(price, 2));
+    total += parseFloat(price, 2).toFixed(2);
     localStorage.setItem(id, price);
   } else {
-    total -= Math.round(parseFloat(price, 2));
+    total -= parseFloat(price, 2).toFixed(2);
     localStorage.removeItem(id);
   }
   if (total < 0.01) total = 0;
@@ -66,7 +66,7 @@ function cartItemClickListener(event) {
   totalCart(getId[1], getId[2], 'sub');
   event.target.remove();
   saveCartItems(olCardDad.innerHTML);
-  const loadPrice = Math.round(parseFloat(localStorage.total, 2));
+  const loadPrice = parseFloat(localStorage.total, 2).toFixed(2);
   document.querySelector('.total-price').innerText = loadPrice;
 }
 
@@ -85,7 +85,7 @@ async function toFillCar(item) {
   olCardDad.appendChild(createCartItemElement(response));
   await saveCartItems(olCardDad.innerHTML);
   const isTotal = document.querySelector('.total-price');
-  const getTotalPrice = Math.round(parseFloat(localStorage.total, 2));
+  const getTotalPrice = parseFloat(localStorage.total, 2).toFixed(2);
   if (isTotal) {
     isTotal.innerText = getTotalPrice;
   } else {
