@@ -36,13 +36,14 @@ function createProductItemElement({ id, title, thumbnail }) {
 
 let idItem;
 const olCardDad = document.querySelector('.cart__items');
+const cartDad = olCardDad.parentNode;
 
-// const liCreateTotal = (total) => {
-//   const li = document.createElement('li');
-//   li.className = 'total-li';
-//   li.innerText = `Total: R$${total}`;
-//   return li;
-// };
+const liCreateTotal = (total) => {
+  const totalPrice = document.createElement('div');
+  totalPrice.className = 'total-price';
+  totalPrice.innerText = `Total: R$${total}`;
+  return totalPrice;
+};
 
 const totalCart = (id, price, signal) => {
   let total = 0;
@@ -97,13 +98,15 @@ async function shoppingCards() {
 const sectionItem = document.querySelector('.items');
 
 const getStoragedItems = () => {
-  if (localStorage.cartItems === '') localStorage.clear();
+  if (localStorage.cartItems === '' || localStorage.total === 'NaN') localStorage.clear();
   if (localStorage.cartItems !== undefined) {
     olCardDad.innerHTML = localStorage.cartItems;
     Array.from(olCardDad.children).forEach((li) => {
       li.addEventListener('click', cartItemClickListener);
     });
   }
+  const catTotal = Math.round(parseFloat(localStorage.total, 2)).toFixed(2);
+  cartDad.appendChild(liCreateTotal(catTotal));
 };
 
 async function insertItems(callback) {

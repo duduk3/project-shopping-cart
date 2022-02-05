@@ -146,4 +146,11 @@ body {
   margin: 0 auto;
   border: 2px solid rgb(5, 52, 219);
   background-color: rgb(249, 249, 246);
+  order: 2;
+}
+
+.total-price {
+  font-size: 32px;
+  order: 1;
+  margin-bottom: 10px;
 }
