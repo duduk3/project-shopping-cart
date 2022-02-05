@@ -36,13 +36,18 @@ function createProductItemElement({ id, title, thumbnail }) {
 
 let idItem;
 const olCardDad = document.querySelector('.cart__items');
-const cartDad = olCardDad.parentNode;
 
-const liCreateTotal = (total) => {
-  const totalPrice = document.createElement('div');
-  totalPrice.className = 'total-price';
-  totalPrice.innerText = `Total: R$${total}`;
-  return totalPrice;
+const liCreateTotal = () => {
+  const cartDad = olCardDad.parentNode;
+  const catTotal = parseFloat(localStorage.total, 2).toFixed(2);
+  if (cartDad.innerHTML.length < 3) {
+    const totalPrice = document.createElement('div');
+    totalPrice.className = 'total-price';
+    totalPrice.innerText = `Total: R$${catTotal}`;
+    return cartDad.appendChild(totalPrice);
+  }
+  const getTotalPrice = document.querySelector('.total-price');
+  getTotalPrice.innerText = `Total: R$${catTotal}`;
 };
 
 const totalCart = (id, price, signal) => {
@@ -66,6 +71,7 @@ function cartItemClickListener(event) {
   totalCart(getId[1], getId[2], 'sub');
   event.target.remove();
   saveCartItems(olCardDad.innerHTML);
+  liCreateTotal();
 }
 
 function createCartItemElement({ id, title, price }) {
@@ -82,6 +88,7 @@ async function toFillCar(item) {
   const response = await fetchItem(idItem);
   olCardDad.appendChild(createCartItemElement(response));
   await saveCartItems(olCardDad.innerHTML);
+  liCreateTotal();
 }
 
 async function shoppingCards() {
@@ -104,9 +111,8 @@ const getStoragedItems = () => {
     Array.from(olCardDad.children).forEach((li) => {
       li.addEventListener('click', cartItemClickListener);
     });
+    liCreateTotal();
   }
-  const catTotal = Math.round(parseFloat(localStorage.total, 2)).toFixed(2);
-  cartDad.appendChild(liCreateTotal(catTotal));
 };
 
 async function insertItems(callback) {
