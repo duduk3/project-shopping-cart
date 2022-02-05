@@ -41,7 +41,7 @@ const cartDad = olCardDad.parentNode;
 const liCreateTotal = (total) => {
   const totalPrice = document.createElement('div');
   totalPrice.className = 'total-price';
-  totalPrice.innerText = `Total: R$${total}`;
+  totalPrice.innerText = total;
   return totalPrice;
 };
 
@@ -67,7 +67,7 @@ function cartItemClickListener(event) {
   event.target.remove();
   saveCartItems(olCardDad.innerHTML);
   const loadPrice = Math.round(parseFloat(localStorage.total, 2));
-  document.querySelector('.total-price').innerText = `Total: R$ ${loadPrice}`;
+  document.querySelector('.total-price').innerText = loadPrice;
 }
 
 function createCartItemElement({ id, title, price }) {
