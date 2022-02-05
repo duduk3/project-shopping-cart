@@ -87,7 +87,7 @@ async function toFillCar(item) {
   const isTotal = document.querySelector('.total-price');
   const getTotalPrice = Math.round(parseFloat(localStorage.total, 2));
   if (isTotal) {
-    isTotal.innerText = `Total: R$ ${getTotalPrice}`;
+    isTotal.innerText = getTotalPrice;
   } else {
     cartDad.appendChild(liCreateTotal(getTotalPrice));
   }
