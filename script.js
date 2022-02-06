@@ -3,6 +3,15 @@ const biggerImg = (string) => {
   return imgCorrect;
 };
 
+const converNumber = (num) => {
+  if (parseInt(num, 10) !== parseFloat(num)) {
+    const ex1 = parseFloat(num, 2);
+    return ex1;    
+  }
+  const ex2 = parseInt(num, 10);
+  return ex2;
+};
+
 function createProductImageElement(imageSource) {
   const imageCorrect = biggerImg(imageSource);
   const img = document.createElement('img');
@@ -48,13 +57,13 @@ const liCreateTotal = (total) => {
 const totalCart = (id, price, signal) => {
   let total = 0;
   if (localStorage.total !== undefined) {
-    total = parseFloat(localStorage.getItem('total'), 2).toFixed(2);
+    total = converNumber(localStorage.total);
   }
   if (signal === 'sum') {
-    total += parseFloat(price, 2).toFixed(2);
+    total += converNumber(price);
     localStorage.setItem(id, price);
   } else {
-    total -= parseFloat(price, 2).toFixed(2);
+    total -= converNumber(price);
     localStorage.removeItem(id);
   }
   if (total < 0.01) total = 0;
@@ -66,7 +75,12 @@ function cartItemClickListener(event) {
   totalCart(getId[1], getId[2], 'sub');
   event.target.remove();
   saveCartItems(olCardDad.innerHTML);
-  const loadPrice = parseFloat(localStorage.total, 2).toFixed(2);
+  let loadPrice = converNumber(localStorage.total);
+  if (Number.isInteger(loadPrice)) {
+    loadPrice = loadPrice.toFixed(0);
+  } else {
+    loadPrice = loadPrice.toFixed(2);
+  } 
   document.querySelector('.total-price').innerText = loadPrice;
 }
 
@@ -85,7 +99,12 @@ async function toFillCar(item) {
   olCardDad.appendChild(createCartItemElement(response));
   await saveCartItems(olCardDad.innerHTML);
   const isTotal = document.querySelector('.total-price');
-  const getTotalPrice = parseFloat(localStorage.total, 2).toFixed(2);
+  let getTotalPrice = converNumber(localStorage.total);
+  if (Number.isInteger(getTotalPrice)) {
+    getTotalPrice = getTotalPrice.toFixed(0);
+  } else {
+    getTotalPrice = getTotalPrice.toFixed(2);
+  } 
   if (isTotal) {
     isTotal.innerText = getTotalPrice;
   } else {
@@ -107,13 +126,19 @@ async function shoppingCards() {
 const sectionItem = document.querySelector('.items');
 
 const getStoragedItems = () => {
-  if (localStorage.cartItems === '' || localStorage.total === 'NaN') localStorage.clear();
+  if (localStorage.cartItems === '') localStorage.clear();
   if (localStorage.cartItems !== undefined) {
     olCardDad.innerHTML = localStorage.cartItems;
     Array.from(olCardDad.children).forEach((li) => {
       li.addEventListener('click', cartItemClickListener);
     });
-    cartDad.appendChild(liCreateTotal(parseFloat(localStorage.total, 2)));
+    let getPrice = converNumber(localStorage.total);
+    if (Number.isInteger(getPrice)) {
+      getPrice = getPrice.toFixed(0);
+    } else {
+      getPrice = getPrice.toFixed(2);
+    }
+    cartDad.appendChild(liCreateTotal(getPrice));
   }
 };
 
