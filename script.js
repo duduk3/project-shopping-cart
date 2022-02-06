@@ -1,3 +1,18 @@
+const createLoading = () => {
+  const containerDad = document.querySelector('.container');
+  const divLoading = document.createElement('div');
+  divLoading.className = 'loading';
+  divLoading.innerText = 'carregando...';
+  containerDad.appendChild(divLoading);
+};
+
+const endLoading = (response) => {
+  const loadingElement = document.querySelector('.loading');
+  if (response) {
+    loadingElement.remove();
+  } 
+};
+
 const biggerImg = (string) => {
   const imgCorrect = string.replace('I.jpg', 'B.jpg');
   return imgCorrect;
@@ -87,9 +102,11 @@ function createCartItemElement({ id, title, price }) {
 
 async function toFillCar(item) {
   idItem = item;
+  createLoading();
   const response = await fetchItem(idItem);
   olCardDad.appendChild(createCartItemElement(response));
   await saveCartItems(olCardDad.innerHTML);
+  endLoading(response);
   const isTotal = document.querySelector('.total-price');
   const getTotalPrice = convertNumber(localStorage.total);
   if (isTotal) {
@@ -126,10 +143,12 @@ const getStoragedItems = async () => {
 
 async function insertItems(callback) {
   getStoragedItems();
+  createLoading();
   const resultApi = await fetchProducts('computador');
   await resultApi.forEach((element) => {
     sectionItem.appendChild(createProductItemElement(element));
   });
+  endLoading(resultApi);
   callback();
 }
 
