@@ -3,13 +3,10 @@ const biggerImg = (string) => {
   return imgCorrect;
 };
 
-const converNumber = (num) => {
-  if (parseInt(num, 10) !== parseFloat(num)) {
-    const ex1 = parseFloat(num, 2);
-    return ex1;    
-  }
-  const ex2 = parseInt(num, 10);
-  return ex2;
+const convertNumber = (num) => {
+  let newPrice = parseFloat(num);
+  newPrice = newPrice.toFixed(2);  
+  return parseFloat(newPrice);
 };
 
 function createProductImageElement(imageSource) {
@@ -54,16 +51,16 @@ const liCreateTotal = (total) => {
   return totalPrice;
 };
 
-const totalCart = (id, price, signal) => {
+const calculateTotal = (id, price, signal) => {
   let total = 0;
   if (localStorage.total !== undefined) {
-    total = converNumber(localStorage.total);
+    total = convertNumber(localStorage.total);
   }
   if (signal === 'sum') {
-    total += converNumber(price);
+    total += convertNumber(price);
     localStorage.setItem(id, price);
   } else {
-    total -= converNumber(price);
+    total -= convertNumber(price);
     localStorage.removeItem(id);
   }
   if (total < 0.01) total = 0;
@@ -72,15 +69,10 @@ const totalCart = (id, price, signal) => {
 
 function cartItemClickListener(event) {
   const getId = event.target.classList;
-  totalCart(getId[1], getId[2], 'sub');
+  calculateTotal(getId[1], getId[2], 'sub');
   event.target.remove();
   saveCartItems(olCardDad.innerHTML);
-  let loadPrice = converNumber(localStorage.total);
-  if (Number.isInteger(loadPrice)) {
-    loadPrice = loadPrice.toFixed(0);
-  } else {
-    loadPrice = loadPrice.toFixed(2);
-  } 
+  const loadPrice = convertNumber(localStorage.total);
   document.querySelector('.total-price').innerText = loadPrice;
 }
 
@@ -89,7 +81,7 @@ function createCartItemElement({ id, title, price }) {
   li.className = `cart__item ${id} ${price}`;
   li.innerText = `SKU: ${id} | NAME: ${title} | PRICE: $${price}`;
   li.addEventListener('click', cartItemClickListener);
-  totalCart(id, price, 'sum');
+  calculateTotal(id, price, 'sum');
   return li;
 }
 
@@ -99,12 +91,7 @@ async function toFillCar(item) {
   olCardDad.appendChild(createCartItemElement(response));
   await saveCartItems(olCardDad.innerHTML);
   const isTotal = document.querySelector('.total-price');
-  let getTotalPrice = converNumber(localStorage.total);
-  if (Number.isInteger(getTotalPrice)) {
-    getTotalPrice = getTotalPrice.toFixed(0);
-  } else {
-    getTotalPrice = getTotalPrice.toFixed(2);
-  } 
+  const getTotalPrice = convertNumber(localStorage.total);
   if (isTotal) {
     isTotal.innerText = getTotalPrice;
   } else {
@@ -125,19 +112,14 @@ async function shoppingCards() {
 
 const sectionItem = document.querySelector('.items');
 
-const getStoragedItems = () => {
+const getStoragedItems = async () => {
   if (localStorage.cartItems === '') localStorage.clear();
   if (localStorage.cartItems !== undefined) {
     olCardDad.innerHTML = localStorage.cartItems;
     Array.from(olCardDad.children).forEach((li) => {
       li.addEventListener('click', cartItemClickListener);
     });
-    let getPrice = converNumber(localStorage.total);
-    if (Number.isInteger(getPrice)) {
-      getPrice = getPrice.toFixed(0);
-    } else {
-      getPrice = getPrice.toFixed(2);
-    }
+    const getPrice = convertNumber(localStorage.total);
     cartDad.appendChild(liCreateTotal(getPrice));
   }
 };
@@ -150,6 +132,18 @@ async function insertItems(callback) {
   });
   callback();
 }
+
+const emptyCart = () => {
+  const btnEmpty = document.querySelector('.empty-cart');
+  btnEmpty.addEventListener('click', async () => {
+    const cartItemsDad = document.querySelector('.cart__items');
+    cartItemsDad.innerHTML = '';
+    const totalElement = document.querySelector('.cart');
+    totalElement.lastChild.innerText = '0';
+    localStorage.clear();
+  });
+};
+emptyCart();
 
 window.onload = () => {
   insertItems(shoppingCards);
