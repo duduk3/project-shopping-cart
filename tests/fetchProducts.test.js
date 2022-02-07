@@ -23,7 +23,7 @@ describe('1 - Teste a função fecthProducts', () => {
     const fetchApi = async () => {
       const response = await fetchProducts();
       
-      expect(response).toThrowError('You must provide an url');
+      expect(response).toThrow('You must provide an url');
     }
   })
 })

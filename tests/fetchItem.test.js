@@ -23,7 +23,7 @@ describe('2 - Teste a função fecthItem', () => {
     const fetchApi = async () => {
       const response = await fetchItem();
       
-      expect(response).toThrowError('You must provide an url');
+      expect(response).toThrow('You must provide an url');
     }
   })
 });
