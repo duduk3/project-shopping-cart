@@ -144,11 +144,12 @@ const getStoragedItems = async () => {
 async function insertItems(callback) {
   getStoragedItems();
   createLoading();
-  const resultApi = await fetchProducts('computador');
-  await resultApi.forEach((element) => {
+  const responseApi = await fetchProducts('computador');
+  const { results } = await responseApi;
+  await results.forEach((element) => {
     sectionItem.appendChild(createProductItemElement(element));
   });
-  endLoading(resultApi);
+  endLoading(results);
   callback();
 }
 
