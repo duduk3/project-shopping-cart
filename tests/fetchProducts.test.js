@@ -19,11 +19,14 @@ describe('1 - Teste a função fecthProducts', () => {
     const response = await fetchProducts('computador');
     expect(response).toEqual(computadorSearch);
   });
-  it('Teste se, ao chamar a função fetchProducts sem argumento, retorna um erro com a mensagem: You must provide an url (5)', () => {
-    const fetchApi = async () => {
-      const response = await fetchProducts();
-      
-      expect(response).toThrow('You must provide an url');
+  it('Teste se, ao chamar a função fetchProducts sem argumento, retorna um erro com a mensagem: You must provide an url (5)', (done) => {
+    const errorMessage = 'You must provide an url';
+    try {
+      const response = fetchProducts();
+      done();
+    } catch (err) {
+      done(err)
     }
+    expect(Promise.reject(new Error('You must provide an url'))).rejects.toThrow('You must provide an url');
   })
-})
+});
