@@ -1,13 +1,35 @@
-# :construction: README customizado em construção ! :construction:
-<!-- Olá, Tryber!
-Esse é apenas um arquivo inicial para o README do seu projeto no qual você pode customizar e reutilizar todas as vezes que for executar o trybe-publisher.
+# Projeto de constução de uma página de carrinho de compras em Javascript, desenvolvido no curso - Iniciando o módulo 'Frontend'! :rocket:
 
-Para deixá-lo com a sua cara, basta alterar o seguinte arquivo da sua máquina: ~/.student-repo-publisher/custom/_NEW_README.md
+## Desenvolvedo habilidades de armazenameto e assincronicidade com o Javascript.
 
-É essencial que você preencha esse documento por conta própria, ok?
-Não deixe de usar nossas dicas de escrita de README de projetos, e deixe sua criatividade brilhar!
-:warning: IMPORTANTE: você precisa deixar nítido:
-- quais arquivos/pastas foram desenvolvidos por você; 
-- quais arquivos/pastas foram desenvolvidos por outra pessoa estudante;
-- quais arquivos/pastas foram desenvolvidos pela Trybe.
--->
+### Podemos dividir os códigos js, modularizando de acordo com a função e este foi o conteúdo do bloco 8 do curso da Trybe. 
+
+<details>
+  <summary>
+    <b>📌Praticamos muita lógica, com funções assíncronas nativas e arazenamento local de dados em Javascript:</b>
+  </summary>
+  
+  - **1** utilizando funções fetch nativas para requisitar dados de API 
+  - **2** tratando o tipo de dados recebidos, extraindo as informações
+  - **3** inserindo itens e retirando do carrinho
+   -**4** calculando o total 
+  - **5** utilizando localstorage para armazenar os dados
+  - **obs:** foram realizados alguns testes para garantir a efiácia nas chamadas da API e mais.
+</details>
+
+<details>
+  <summary>
+    <b>📌 Para ir além, você pode:</b>
+  </summary>
+
+  - **Inserir os valores dos produtos antes de comprar**
+  - **salvar o carrinho em um arquivo**
+  - **emitir uma nota que possa ser impressa**
+  - **e muito mais**
+</details>
+
+<b>😉Muito conhecimento adquirido e é só o começo! :zap:</b>
+
+
+
+### O Javascript nos mostra o seu poder e ainda estamos no começo! :rocket: 
