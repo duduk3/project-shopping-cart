@@ -2,11 +2,11 @@
 
 ## Desenvolvedo habilidades de armazenameto e assincronicidade com o Javascript.
 
-### Podemos dividir os códigos js, modularizando de acordo com a função e este foi o conteúdo do bloco 8 do curso da Trybe. 
+### Podemos dividir os códigos js, modularizando de acordo com a função e este foi o conteúdo do bloco 1 de Frontend no curso da Trybe. 
 
 <details>
   <summary>
-    <b>📌Praticamos muita lógica, com funções assíncronas nativas e arazenamento local de dados em Javascript:</b>
+    <b>📌Praticamos muita lógica, com funções assíncronas nativas e armazenamento local de dados em Javascript:</b>
   </summary>
   
   - **1** utilizando funções fetch nativas para requisitar dados de API 
