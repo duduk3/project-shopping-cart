@@ -10,9 +10,9 @@
   </summary>
   
   - **1** utilizando funções fetch nativas para requisitar dados de API 
-  - **2** tratando o tipo de dados recebidos, extraindo as informações
+  - **2** tratando o tipo de dados recebidos e extraindo as informações
   - **3** inserindo itens e retirando do carrinho
-   -**4** calculando o total 
+  - **4** calculando o total 
   - **5** utilizando localstorage para armazenar os dados
   - **obs:** foram realizados alguns testes para garantir a efiácia nas chamadas da API e mais.
 </details>
