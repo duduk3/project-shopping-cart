@@ -19,7 +19,7 @@ describe('1 - Teste a função fecthProducts', () => {
     const response = await fetchProducts('computador');
     expect(response).toEqual(computadorSearch);
   });
-  it('Teste se, ao chamar a função fetchProducts sem argumento, retorna um erro com a mensagem: You must provide an url (5)', (done) => {
+  it('Testa se, ao chamar a função fetchProducts sem argumento, retorna um erro com a mensagem: You must provide an url (5)', (done) => {
     try {
       const response = fetchProducts();
       done();
