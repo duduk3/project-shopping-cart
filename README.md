@@ -1,6 +1,6 @@
 # Projeto de constução de uma página de carrinho de compras em Javascript, desenvolvido no curso - Iniciando o módulo 'Frontend'! :rocket:
 
-## Desenvolvedo habilidades de armazenameto e assincronicidade com o Javascript.
+## Desenvolvedo habilidades de armazenamento e assincronicidade com o Javascript.
 
 ### Podemos dividir os códigos js, modularizando de acordo com a função e este foi o conteúdo do bloco 1 de Frontend no curso da Trybe. 
 
